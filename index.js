@@ -16,7 +16,7 @@ dbConnection();
 app.get("/", (req, res) => {
   return res.json({ msg: `App running on PORT ${PORT}...` });
 });
-
+  
 app.use("/auth", authRoutes);
 app.use("/comment", commentRoutes);
 
