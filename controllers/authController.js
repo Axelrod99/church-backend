@@ -2,11 +2,21 @@ const User = require("../models/userModal");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 
+function generateNumberCode(length) {
+    let result = "";
+    const characters = "0123456789";
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
+
 const AuthRegister = async (req, res, next) => {
   const { email } = req.body;
 
   try {
-    const VerificationToken = crypto.randomBytes(8).toString("hex");
+    const VerificationToken = generateNumberCode(6);
 
     const user = new User({
       email,

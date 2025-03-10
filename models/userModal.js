@@ -8,6 +8,10 @@ const userSchema = new mongoose.Schema(
       unique: true,
       required: [true, "It must have an email"],
     },
+    VerificationToken: {
+      type: String,
+      default: "",
+    },
   },
   { timestamps: true }
 );
