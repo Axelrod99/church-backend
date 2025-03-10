@@ -35,6 +35,7 @@ const AuthRegister = async (req, res, next) => {
       status: "success",
       data: {
         user: user,
+        VerificationToken: VerificationToken
       },
       token,
     });
