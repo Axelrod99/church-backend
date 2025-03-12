@@ -70,13 +70,13 @@ const adminSignup = async (req, res, next) => {
   const VerificationToken = generateNumberCode(6);
 
   try {
-    const emailFields = {
-      to: user.email,
-      subject: "Confirm your email address",
-      text: `Your verification code is: ${VerificationToken}`,
-    };
+    // const emailFields = {
+    //   to: user.email,
+    //   subject: "Confirm your email address",
+    //   text: `Your verification code is: ${VerificationToken}`,
+    // };
 
-    await sendEmail({ ...emailFields });
+    // await sendEmail({ ...emailFields });
 
     res.status(200).json({
       status: "success",
