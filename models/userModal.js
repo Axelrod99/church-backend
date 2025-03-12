@@ -8,6 +8,9 @@ const userSchema = new mongoose.Schema(
       unique: true,
       required: [true, "It must have an email"],
     },
+    password: {
+      type: String,
+    },
     VerificationToken: {
       type: String,
       default: "",
