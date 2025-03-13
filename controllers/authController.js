@@ -1,6 +1,7 @@
 const User = require("../models/userModal");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 const sendEmail = require("../utils/sendEmail");
 
 function generateNumberCode(length) {
@@ -130,4 +131,61 @@ const adminRegister = async (req, res, next) => {
   }
 };
 
-module.exports = { AuthRegister, adminSignup, adminRegister };
+const adminLogin = async (req, res, next) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email }).select("+password");
+
+    if (!user) {
+      return res.status(401).json({
+        status: "failed",
+        data: [],
+        message: "No user found with this email. Please try again.",
+      });
+    }
+
+    // Plain-text password comparison (INSECURE - DO NOT USE IN PRODUCTION)
+    if (password === user.password) {
+      // console.log("Passwords match! (INSECURE)");
+
+      const options = {
+        maxAge: 20 * 60 * 1000,
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+      };
+
+      const userObject = user.toObject();
+      delete userObject.password;
+
+      const token = user.generateAccessJWT();
+      res.cookie("SessionID", token, options);
+    
+
+      return res.status(200).json({
+        status: "success",
+        data: [userObject],
+        message: "You have successfully logged in.",
+        token: token,
+      });
+    } else {
+      console.log("Passwords do not match.");
+      return res.status(401).json({
+        status: "failed",
+        data: [],
+        message: "Invalid email or password. Please try again.",
+      });
+    }
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      status: "error",
+      code: 500,
+      data: [],
+      message: "Internal Server Error",
+    });
+  }
+};
+
+module.exports = { AuthRegister, adminSignup, adminRegister, adminLogin };
