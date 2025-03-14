@@ -48,6 +48,7 @@ const AuthRegister = async (req, res, next) => {
         VerificationToken: VerificationToken,
       },
       token,
+      status: 'User'
     });
   } catch (error) {
     next(error);
@@ -71,13 +72,13 @@ const adminSignup = async (req, res, next) => {
   const VerificationToken = generateNumberCode(6);
 
   try {
-    // const emailFields = {
-    //   to: user.email,
-    //   subject: "Confirm your email address",
-    //   text: `Your verification code is: ${VerificationToken}`,
-    // };
+    const emailFields = {
+      to: user.email,
+      subject: "Confirm your email address",
+      text: `Your verification code is: ${VerificationToken}`,
+    };
 
-    // await sendEmail({ ...emailFields });
+    await sendEmail({ ...emailFields });
 
     res.status(200).json({
       status: "success",
@@ -125,6 +126,7 @@ const adminRegister = async (req, res, next) => {
         user: user,
       },
       token,
+      status: 'Admin'
     });
   } catch (error) {
     next(error);
@@ -168,6 +170,7 @@ const adminLogin = async (req, res, next) => {
         data: [userObject],
         message: "You have successfully logged in.",
         token: token,
+        status: 'Admin'
       });
     } else {
       console.log("Passwords do not match.");
