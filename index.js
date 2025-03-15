@@ -2,6 +2,7 @@ const express = require("express");
 const dbConnection = require("./config/db");
 const authRoutes = require("./routes/authRoute");
 const postRoutes = require("./routes/postRoute")
+const categoryRoutes = require("./routes/categoryRoute")
 
 const cors = require("cors");
 
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
   
 app.use("/auth", authRoutes);
 app.use("/post", postRoutes);
+app.use("/category", categoryRoutes);
 
 app.use("*", (req, res) => res.status(404).json({ error: "not found" }));
 
