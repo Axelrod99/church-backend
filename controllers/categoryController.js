@@ -1,4 +1,5 @@
 const Category = require("../models/categoryModal");
+const { Comment, Post } = require("../models/commentModal");
 const cloudinary = require("../utils/cloudinary");
 
 const getAllCategory = async (req, res) => {
@@ -57,8 +58,20 @@ const updateCategory = async (req, res) => {
   }
 };
 
+const filterCategory = async (req, res) => {
+  const category = req.params.category;
+  try {
+    const items = await Post.find({ category });
+    res.status(200).json(items);
+  } catch (error) {
+    console.error("Error finding posts by category:", error);
+    // throw error;
+  }
+};
+
 module.exports = {
   getAllCategory,
   createCategory,
-  updateCategory
+  updateCategory,
+  filterCategory,
 };

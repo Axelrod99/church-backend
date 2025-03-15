@@ -3,6 +3,7 @@ const {
   createCategory,
   getAllCategory,
   updateCategory,
+  filterCategory
 } = require("../controllers/categoryController");
 
 const router = express.Router();
@@ -20,6 +21,7 @@ const upload = multer({ storage });
 router.route("/").get((req, res) => res.send("this is the category route...."));
 
 router.get("/all", getAllCategory);
+router.get("/:category", filterCategory);
 router.post("/createCategory", upload.single("image"), createCategory);
 router.patch("/updateCategory/:id", upload.single("image"), updateCategory);
 
